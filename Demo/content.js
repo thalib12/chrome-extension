@@ -1,32 +1,23 @@
 
-console.log("new49");
-
-
-window.onload = function() {
-    console.log("Page lofde")
-  };
-
-  
-
-
+console.log("Updated....");
 
 window.addEventListener('popstate', function (event) {
-	// The URL changed..
-    console.log("URL Changed...");
-
-// setTimeout(() => {
-    let data=document.getElementsByClassName("gD")
-
-//     var datas=document.getElementsByTagName("span")
-  let  dd=data[0].innerText
-console.log("hello",dd);
-
-chrome.runtime.sendMessage({type: "sender", dd: dd});
-
-
-// }, 1000);
-
+  let data = document.getElementsByClassName("gD")
+  let dd = data[0].innerText
+  console.log("hello", dd);
+  chrome.runtime.sendMessage({ type: "sender", dd: dd });
 });
+
+
+chrome.runtime.onMessage.addListener(
+  function (request, sender, sendResponse) {
+    console.log(sender.tab ?
+      "from a content script:" + sender.tab.url : request);
+    document.getElementsByClassName("gD")[0].innerText = request.greeting
+    if (request.greeting === "hello")
+      sendResponse({ farewell: "goodbye" });
+  }
+);
 
 
 
